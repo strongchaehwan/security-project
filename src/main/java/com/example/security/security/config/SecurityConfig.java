@@ -37,6 +37,15 @@ public class SecurityConfig {
 
         );
 
+        httpSecurity.logout(logout ->
+                logout.logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제
+        );
+
+
+
         httpSecurity.userDetailsService(new CustomerUserDetailService(userRepository));
 
 

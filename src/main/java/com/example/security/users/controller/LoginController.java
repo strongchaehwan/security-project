@@ -28,16 +28,16 @@ public class LoginController {
         return "login/signup"; // signup.html로 이동
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
-        Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
-
-        //인증된 사용자가 로그인한 상태 즉 널이아니면
-        if(authentication != null){
-            new SecurityContextLogoutHandler().logout(request,response,authentication);
-        }
-
-        return "redirect:/";
-    }
+//    @GetMapping("/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response){
+//        Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
+//
+//        //인증된 사용자가 로그인한 상태 즉 널이아니면
+//        if(authentication != null){
+//            new SecurityContextLogoutHandler().logout(request,response,authentication);
+//        }
+//
+//        return "redirect:/";
+//    }
 
 }
