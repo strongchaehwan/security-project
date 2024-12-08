@@ -1,5 +1,6 @@
 package com.example.security.security.config;
 
+import com.example.security.security.handler.CustomAuthenticationFailureHandler;
 import com.example.security.security.handler.CustomAuthenticationSuccessHandler;
 import com.example.security.security.service.CustomerUserDetailService;
 import com.example.security.users.repository.UserRepository;
@@ -30,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "admin") // ADMIN 또는 admin
                         .requestMatchers("/user/**").hasAnyRole("USER", "user") // MEMBER 또는 member
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "manager") // GOOGLE 또는 google
-                        .requestMatchers("/", "/signup", "/login").permitAll()
+                        .requestMatchers("/", "/signup", "/login*").permitAll()
                         .anyRequest().authenticated()
         );
 
@@ -41,6 +42,7 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .authenticationDetailsSource(authenticationDetailsSource)
                         .successHandler(new CustomAuthenticationSuccessHandler())
+                        .failureHandler(new CustomAuthenticationFailureHandler())
 
         );
 
