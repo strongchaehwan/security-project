@@ -1,26 +1,30 @@
 package com.example.security.security.config;
 
+import com.example.security.security.handler.CustomAuthenticationSuccessHandler;
 import com.example.security.security.service.CustomerUserDetailService;
 import com.example.security.users.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserRepository userRepository;
-
-    public SecurityConfig(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+   // private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,AuthenticationProvider authenticationProvider) throws Exception {
         httpSecurity.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/css/**", "/images/**", "/js/**", "favicon.*", "/*/icon-*").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "admin") // ADMIN 또는 admin
@@ -30,10 +34,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
         );
 
+        httpSecurity.authenticationProvider(authenticationProvider);
         httpSecurity.formLogin(formLogin ->
                 formLogin.loginPage("/login")
                         .usernameParameter("loginId")
                         .passwordParameter("password")
+                        .authenticationDetailsSource(authenticationDetailsSource)
+                        .successHandler(new CustomAuthenticationSuccessHandler())
 
         );
 
@@ -45,8 +52,7 @@ public class SecurityConfig {
         );
 
 
-
-        httpSecurity.userDetailsService(new CustomerUserDetailService(userRepository));
+        //httpSecurity.userDetailsService(new CustomerUserDetailService(userRepository));
 
 
         return httpSecurity.build();

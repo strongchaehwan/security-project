@@ -1,5 +1,6 @@
 package com.example.security.users.domain.dto;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,11 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class AcoountContext implements UserDetails {
+@Getter
+public class AccountContext implements UserDetails {
 
     private final UserDto userDto;
 
-    public AcoountContext(UserDto userDto) {
+    public AccountContext(UserDto userDto) {
         this.userDto = userDto;
     }
 

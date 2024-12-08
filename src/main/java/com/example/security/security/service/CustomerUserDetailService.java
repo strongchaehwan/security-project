@@ -1,7 +1,7 @@
 package com.example.security.security.service;
 
 import com.example.security.users.domain.User;
-import com.example.security.users.domain.dto.AcoountContext;
+import com.example.security.users.domain.dto.AccountContext;
 import com.example.security.users.domain.dto.UserDto;
 import com.example.security.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CustomerUserDetailService implements UserDetailsService {
         }
 
         UserDto userDto = new UserDto(user.getLoginId(), user.getPassword(), user.getAge(), user.getRoles());
-        return new AcoountContext(userDto);
+        return new AccountContext(userDto);
 
     }
 }
